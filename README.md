@@ -8,9 +8,9 @@ python3 ./main.py --image_file test-image.jpg --output recovered-image.jpg
 
 ## Local project dev environment setup
 For the first run one needs to:
-0. Install [Intel OpenVINO](https://software.intel.com/content/www/us/en/develop/tools/openvino-toolkit/choose-download.html) with _Python3_
-1. Run `(OPEN_VINO INSTALL PATH)/bin/setupvars.sh`
-2. Run `init.sh` shell script (for Linux/MacOS), which does:
+1. Install [Intel OpenVINO](https://software.intel.com/content/www/us/en/develop/tools/openvino-toolkit/choose-download.html) with _Python3_
+2. Run `(OPEN_VINO INSTALL PATH)/bin/setupvars.sh`
+3. Run `init.sh` shell script (for Linux/MacOS), which does:
     1. Setup a python virtualenv
     2. Install **requirements.txt**
     3. Create **./data/models** folder
