@@ -1,7 +1,8 @@
-from helper import colorization, cv_tools, superres
+from helper import colorization, cv_tools, superres, common
 
 
 def main():
+    cli_args = common.build_arg().parse_args()
     # the suggested flow is as follows:
     # 1) parse an input image from args
     # 2) [cv_tools] create a cv.Mat out of input image

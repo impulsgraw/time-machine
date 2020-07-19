@@ -3,7 +3,7 @@ import helper.common as paths
 
 
 class ColorizationNetwork:
-    MODEL_PATH = os.path.join(paths.MODELS_PATH, "public/coloriation-v2/colorization-v2.xml")
+    MODEL_XML = os.path.join(paths.MODELS_PATH, "public/coloriation-v2/colorization-v2.xml")
     MODEL_NPY = os.path.join(paths.MODELS_PATH, "public/coloriation-v2/colorization-v2.npy")
 
     @staticmethod
