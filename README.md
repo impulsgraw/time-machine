@@ -1,9 +1,27 @@
 # Time Machine
 An application for colorizing and recovering old black&amp;white photos and videos
 
-## Project startup
+## Example usage
 ```shell script
-python3 ./main.py --image_file test-image.jpg --output recovered-image.jpg
+python3 main.py --image_file test-image.jpg --output_file recovered-image.jpg
+```
+
+Full options list is as follows:
+```text
+usage: main.py [-h] -i IMAGE_FILE (-o OUTPUT_FILE | -s) [-d DEVICE] [-v]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IMAGE_FILE, --image_file IMAGE_FILE
+                        an input image file
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        an output image file
+  -s, --show            display an output image on the screen instead of
+                        saving into file
+  -d DEVICE, --device DEVICE
+                        target device for infer: CPU, GPU, FPGA, HDDL or
+                        MYRIAD; defaults to CPU
+  -v, --verbose         enable display of processing logs
 ```
 
 ## Local project dev environment setup
@@ -39,7 +57,7 @@ Formerly recommend to work within local virtualenv
 
 ## TODOs
 - [ ] Create an init shell script for Windows (?)
-- [ ] Command line args parsing + help output
+- [x] Command line args parsing + help output
 - [ ] Colorization network execution
 - [ ] Super-resolution network execution
 - [ ] cv_tools implementation
