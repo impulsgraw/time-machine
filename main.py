@@ -1,33 +1,46 @@
 from helper import colorization, cv_tools, superres, common
+import logging as log
+import sys
 
 
 def main():
+    # grab cli arguments
     cli_args = common.build_arg().parse_args()
-    # the suggested flow is as follows:
-    # 1) parse an input image from args
-    # 2) [cv_tools] create a cv.Mat out of input image
-    # 3) [cv_tools] preprocess image: inpaint
-    # 4) [cv_tools] preprocess image: resize to [colorization] input
-    # 5) [colorization] proceed with colorization
-    # 6) [cv_tools] resize (interpolate) to [superres] input
-    # 7) [superres] proceed with super-resolution
-    # 8) [cv_tools] resize (interpolate) to the former image input
-    # 9) output an image somewhere
 
-    # ... input ...
+    # setup logging level
+    log.basicConfig(format="[ %(levelname)s ] %(message)s",
+                    level=log.INFO if not cli_args.verbose else log.DEBUG, stream=sys.stdout)
 
-    cv_tools.init_image()
-    cv_tools.inpaint()
-    cv_tools.scale()
+    # parse an input image from args
+    # create a cv.Mat out of input image
+    img_mat = cv_tools.init_image(cli_args.input_image)
+    original_constraints = img_mat.shape[1], img_mat.shape[0]
 
-    colorization.ColorizationNetwork.colorize()
+    # preprocess image: inpaint
+    img_mat = cv_tools.inpaint(img_mat)
 
-    cv_tools.scale()
+    colorization_network = colorization.ColorizationNetwork({
+        "device": cli_args.device
+    })
 
-    superres.SuperresNetwork.superres()
+    # preprocess image: resize to [colorization] input
+    img_mat = cv_tools.scale(img_mat, *colorization_network.input_image_size())
+    # proceed with colorization
+    img_mat = colorization_network.colorize(img_mat)
 
-    cv_tools.scale()
+    superres_network = superres.SuperresNetwork({
+        "device": cli_args.device
+    })
 
+    # resize (interpolate) to [superres] input
+    img_mat = cv_tools.scale(img_mat, *superres_network.input_image_size())
+    # proceed with super-resolution
+    img_mat = superres_network.superres(img_mat)
+
+    # resize (interpolate) to the former image input
+    img_mat = cv_tools.scale(img_mat, *original_constraints)
+
+    # output an image somewhere
     # ... output ...
 
 

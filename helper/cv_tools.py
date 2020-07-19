@@ -1,13 +1,13 @@
 import cv2 as cv
 
 
-def init_image():
-    print('init_image!')
+def init_image(img_path, options=None):
+    raise NotImplementedError("Method not implemented yet")
 
 
-def inpaint(in_mat=None, out_mat=None):
-    print('inpaint!')
+def inpaint(in_mat=None):
+    raise NotImplementedError("Method not implemented yet")
 
 
-def scale(in_mat=None, out_mat=None, *, scale_to=None, interpolation=None):
-    print('scale!')
+def scale(in_mat=None, *scale_to):
+    raise NotImplementedError("Method not implemented yet")
