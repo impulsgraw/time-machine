@@ -8,7 +8,7 @@ python3 main.py --image_file test-image.jpg --output_file recovered-image.jpg
 
 Full options list is as follows:
 ```text
-usage: main.py [-h] -i IMAGE_FILE (-o OUTPUT_FILE | -s) [-d DEVICE] [-v]
+usage: main.py [-h] -i IMAGE_FILE (-o OUTPUT_FILE | -s) [-d DEVICE] [-v] [-S]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -22,7 +22,7 @@ optional arguments:
                         target device for infer: CPU, GPU, FPGA, HDDL or
                         MYRIAD; defaults to CPU
   -v, --verbose         enable display of processing logs
-  -s, --smoothing	use smoothing filter
+  -S, --smoothing	use smoothing filter
 ```
 
 ## Local project dev environment setup
