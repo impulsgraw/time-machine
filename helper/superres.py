@@ -2,7 +2,6 @@ import os
 import helper.common as paths
 import logging as log
 from openvino.inference_engine import IECore
-import numpy as np
 import cv2 as cv
 
 
@@ -33,9 +32,9 @@ class SuperresNetwork:
         self.input_blob_original = next(input_iterator)
         self.input_shape_original = self.load_net.inputs[self.input_blob_original].shape
         assert self.input_shape_original == [1, 3, 270, 480], "Input 1 does not match network shape"
-        #self.input_blob_interpolated = next(input_iterator)
-        #self.input_shape_interpolated = self.load_net.inputs[self.input_blob_interpolated].shape
-        #assert self.input_shape_interpolated == [1, 3, 1080, 1920], "Input 2 does not match network shape"
+        self.input_blob_interpolated = next(input_iterator)
+        self.input_shape_interpolated = self.load_net.inputs[self.input_blob_interpolated].shape
+        assert self.input_shape_interpolated == [1, 3, 1080, 1920], "Input 2 does not match network shape"
 
         assert len(self.load_net.outputs) == 1, "Expected number of outputs is 1"
         self.output_blob = next(iter(self.load_net.outputs))
@@ -46,10 +45,9 @@ class SuperresNetwork:
         _, _, h, w = self.input_shape_original
         return w, h
 
-
     #def input_image_size_interpolated(self):
-     #   _, _, h, w = self.input_shape_interpolated
-      #  return w, h
+    #    _, _, h, w = self.input_shape_interpolated
+    #    return w, h
 
     #  Convention unknown
     def input_image_size(self):
@@ -67,6 +65,16 @@ class SuperresNetwork:
 expected ${w_in}x${h_in}, got ${in_mat.shape[1]}x${in_mat.shape[0]}"""
 
         log.debug("Preprocessing frame")
-        img_interpolated = cv.resize(in_mat.copy(), (1920, 1080))
+        #  Create 2nd input
+        in_bic = cv.resize(in_mat.copy(), (1920, 1080), interpolation=cv.INTER_CUBIC)
 
+        log.debug("Network inference")
+        #  This should do the trick
+        res = self.exec_net.infer(inputs={
+            self.input_blob_original: [in_mat],
+            self.input_blob_interpolated: [in_bic]
+        })
 
+        #  Alternatively
+        #res = self.exec_net.infer(inputs = {self.input_blob_original: [in_mat, in_bic]})
+        return res
