@@ -22,4 +22,8 @@ def build_arg():
 
     parser.add_argument("-v", "--verbose", help="enable display of processing logs",
                         action="store_true", default=False)
+
+    parser.add_argument("-S", "--smoothing", help="use smoothing filter",
+                        action="store_true", default=False)
+
     return parser
