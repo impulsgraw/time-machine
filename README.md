@@ -22,6 +22,7 @@ optional arguments:
                         target device for infer: CPU, GPU, FPGA, HDDL or
                         MYRIAD; defaults to CPU
   -v, --verbose         enable display of processing logs
+  -s, --smoothing	use smoothing filter
 ```
 
 ## Local project dev environment setup
