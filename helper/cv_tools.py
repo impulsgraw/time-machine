@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 as cv
 import helper.common as paths
-from matplotlib import pyplot as plt
+
 
 class Sketcher:
     def __init__(self, windowname, dests, colors_func):
@@ -15,7 +15,7 @@ class Sketcher:
 
     def show(self):
         cv.imshow(self.windowname, self.dests[0])
-        cv.imshow(self.windowname+": Mask", self.dests[1])
+        cv.imshow(self.windowname + ": Mask", self.dests[1])
 
     def on_mouse(self, event, x, y, flags, param):
         pt = (x, y)
@@ -30,14 +30,18 @@ class Sketcher:
             self.prev_pt = pt
             self.show()
 
+
 def init_image(img_path, options=None):
+    options = {"smoothing": False, **(options if type(options) == dict else {})}
+
     img = cv.imread(img_path, cv.IMREAD_COLOR)
-    if cli_args.smoothing:
-        bilateral = cv.bilateralFilter(img, 5, 75, 75)
-        image = cv.imshow("Bilateral", bilateral)
-        return bilateral
-    else:
-        return img
+    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+
+    if options["smoothing"]:
+        img = cv.bilateralFilter(img, 5, 75, 75)
+
+    return img
+
 
 def inpaint(image):
     img_mask = image.copy()
@@ -53,16 +57,14 @@ def inpaint(image):
             cv.imshow("Inpaint", result)
     return result
 
-def scale(res, width, height):
 
-    resized_image = cv.resize(res, (width, height), interpolation=cv.INTER_NEAREST)
+def scale(res, height, width):
+    return cv.resize(res, (width, height), interpolation=cv.INTER_CUBIC)
 
-    titles = ["Original", "Resized image"]
-    images = [res, resized_image]
-    count = 2
 
-    for i in range(count):
-        plt.subplot(2, 2, i + 1)
-        plt.title(titles[i])
-        plt.imshow(images[i])
-    plt.show()
+def output(img, img_path):
+    cv.imwrite(img_path, img)
+
+def show(img):
+    cv.imshow("Result", img)
+    cv.waitKey()

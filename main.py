@@ -13,11 +13,11 @@ def main():
 
     # parse an input image from args
     # create a cv.Mat out of input image
-    img_mat = cv_tools.init_image(cli_args.input_image)
-    original_constraints = img_mat.shape[1], img_mat.shape[0]
+    img_mat = cv_tools.init_image(cli_args.image_file, {"smoothing": cli_args.smoothing})
+    original_constraints = img_mat.shape[:2]
 
     # preprocess image: inpaint
-    img_mat = cv_tools.inpaint(img_mat)
+    # img_mat = cv_tools.inpaint(img_mat)
 
     colorization_network = colorization.ColorizationNetwork({
         "device": cli_args.device
@@ -41,7 +41,12 @@ def main():
     img_mat = cv_tools.scale(img_mat, *original_constraints)
 
     # output an image somewhere
-    # ... output ...
+    if cli_args.output_file:
+        cv_tools.output(img_mat, cli_args.output_file)
+
+    if cli_args.show:
+        cv_tools.show(img_mat)
+
 
 
 if __name__ == "__main__":
