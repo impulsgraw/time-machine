@@ -27,7 +27,6 @@ class SuperresNetwork:
         #  The model accepts two inputs:
         #  1: The image to be resized (3x270x480) [CxHxW]
         #  2: (optional, deprecated) The bicubic interpolation of that same image (3x1080x1920)
-        #assert len(self.load_net.inputs) == 2, "Expected number of inputs is 2"
         assert len(self.load_net.input_info) == 2, "Expected number of inputs is 2"
         input_iterator = iter(self.load_net.input_info)
         self.input_blob_original = next(input_iterator)
@@ -78,6 +77,6 @@ class SuperresNetwork:
             self.input_blob_interpolated: [in_bic]
         })
 
-        out = res[self.output_blob][0].transpose(1, 2, 0) * 255
+        out = cv.normalize(res[self.output_blob][0].transpose(1, 2, 0), alpha=0, beta=255)
 
         return out
