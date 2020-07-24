@@ -62,11 +62,14 @@ class SuperresNetwork:
     def superres(self, in_mat=None):
         h_in, w_in = self.input_image_size()
         assert in_mat.shape == (h_in, w_in, 3), f"""Incompatible dimensions of the input image matrix, 
-            expected ${w_in}x${h_in}, got ${in_mat.shape[1]}x${in_mat.shape[0]}"""
+            expected {w_in}x{h_in}, got {in_mat.shape[1]}x{in_mat.shape[0]}"""
 
         log.debug("Preprocessing frame")
         #  Create 2nd input
         in_bic = cv.resize(in_mat.copy(), (1920, 1080), interpolation=cv.INTER_CUBIC)
+
+        in_mat = in_mat * 255
+        in_bic = in_bic * 255
 
         in_mat = in_mat.transpose(2, 0, 1)
         in_bic = in_bic.transpose(2, 0, 1)
@@ -77,6 +80,6 @@ class SuperresNetwork:
             self.input_blob_interpolated: [in_bic]
         })
 
-        out = cv.normalize(res[self.output_blob][0].transpose(1, 2, 0), alpha=0, beta=255)
+        out = res[self.output_blob][0].transpose(1, 2, 0)
 
         return out

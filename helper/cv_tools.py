@@ -35,7 +35,7 @@ def init_image(img_path, options=None):
     options = {"smoothing": False, **(options if type(options) == dict else {})}
 
     img = cv.imread(img_path, cv.IMREAD_COLOR)
-    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    #img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
     if options["smoothing"]:
         img = cv.bilateralFilter(img, 5, 75, 75)
@@ -62,9 +62,9 @@ def scale(res, height, width):
     return cv.resize(res, (width, height), interpolation=cv.INTER_CUBIC)
 
 
-def output(img, img_path):
-    cv.imwrite(img_path, img)
+def output(images, img_path):
+    cv.imwrite(img_path, np.hstack(images))
 
-def show(img):
-    cv.imshow("Result", img)
+def show(images):
+    cv.imshow("Result", np.hstack(images))
     cv.waitKey()
