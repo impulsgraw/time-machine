@@ -16,7 +16,7 @@ Keras-Preprocessing==1.1.2
 Markdown==3.2.2
 mxnet
 networkx==2.4
-numpy==1.19.0
+numpy==1.22.0
 onnx==1.7.0
 opt-einsum==3.2.1
 protobuf==3.6.1
