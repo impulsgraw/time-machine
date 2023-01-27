@@ -17,7 +17,7 @@ Markdown==3.2.2
 mxnet
 networkx==2.4
 numpy==1.19.0
-onnx==1.7.0
+onnx==1.13.0
 opt-einsum==3.2.1
 protobuf==3.6.1
 PyYAML==5.3.1
